@@ -1,0 +1,140 @@
+[
+  {
+    "id": 1,
+    "title": "Classic Pasta Pomodoro",
+    "image": "pasta-pomodoro.jpg",
+    "readyInMinutes": 25,
+    "cheap": true,
+    "extendedIngredients": [
+      {
+        "id": 1,
+        "name": "pasta",
+        "amount": 200,
+        "unit": "g"
+      },
+      {
+        "id": 2,
+        "name": "tomato",
+        "amount": 4,
+        "unit": "whole"
+      },
+      {
+        "id": 5,
+        "name": "garlic",
+        "amount": 2,
+        "unit": "cloves"
+      },
+      {
+        "id": 6,
+        "name": "olive oil",
+        "amount": 2,
+        "unit": "tbsp"
+      },
+      {
+        "id": 11,
+        "name": "basil",
+        "amount": 10,
+        "unit": "leaves"
+      },
+      {
+        "id": 13,
+        "name": "salt",
+        "amount": 1,
+        "unit": "tsp"
+      },
+      {
+        "id": 14,
+        "name": "black pepper",
+        "amount": 1,
+        "unit": "tsp"
+      }
+    ],
+    "instructions": "1. Boil pasta in salted water according to package instructions.\n2. Heat olive oil in a pan and sauté minced garlic until fragrant.\n3. Add chopped tomatoes and cook for 10 minutes.\n4. Season with salt and black pepper.\n5. Add fresh basil leaves.\n6. Toss with cooked pasta and serve hot."
+  },
+  {
+    "id": 2,
+    "title": "Creamy Mushroom Risotto",
+    "image": "mushroom-risotto.jpg",
+    "readyInMinutes": 40,
+    "cheap": false,
+    "extendedIngredients": [
+      {
+        "id": 22,
+        "name": "rice",
+        "amount": 300,
+        "unit": "g"
+      },
+      {
+        "id": 29,
+        "name": "mushroom",
+        "amount": 200,
+        "unit": "g"
+      },
+      {
+        "id": 4,
+        "name": "onion",
+        "amount": 1,
+        "unit": "medium"
+      },
+      {
+        "id": 7,
+        "name": "butter",
+        "amount": 50,
+        "unit": "g"
+      },
+      {
+        "id": 10,
+        "name": "parmesan cheese",
+        "amount": 50,
+        "unit": "g"
+      },
+      {
+        "id": 47,
+        "name": "cream",
+        "amount": 100,
+        "unit": "ml"
+      }
+    ],
+    "instructions": "1. Sauté diced onion in butter until translucent.\n2. Add mushrooms and cook until golden.\n3. Add rice and toast for 2 minutes.\n4. Gradually add hot broth, stirring constantly.\n5. Cook until rice is creamy and al dente.\n6. Finish with cream and parmesan cheese."
+  },
+  {
+    "id": 3,
+    "title": "Grilled Chicken Salad",
+    "image": "chicken-salad.jpg",
+    "readyInMinutes": 20,
+    "cheap": true,
+    "extendedIngredients": [
+      {
+        "id": 19,
+        "name": "chicken breast",
+        "amount": 200,
+        "unit": "g"
+      },
+      {
+        "id": 3,
+        "name": "lettuce",
+        "amount": 1,
+        "unit": "head"
+      },
+      {
+        "id": 30,
+        "name": "bell pepper",
+        "amount": 1,
+        "unit": "whole"
+      },
+      {
+        "id": 33,
+        "name": "cucumber",
+        "amount": 1,
+        "unit": "whole"
+      },
+      {
+        "id": 6,
+        "name": "olive oil",
+        "amount": 2,
+        "unit": "tbsp"
+      }
+    ],
+    "instructions": "1. Season chicken breast with salt and pepper.\n2. Grill chicken until fully cooked.\n3. Chop lettuce, bell pepper, and cucumber.\n4. Slice the grilled chicken.\n5. Combine all ingredients and drizzle with olive oil."
+  }
+]

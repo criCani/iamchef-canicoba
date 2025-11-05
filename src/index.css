@@ -1,0 +1,21 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4e3c3; /* beige caldo */
+  color: #333;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+}
+
+input {
+  outline: none;
+  border: none;
+}
