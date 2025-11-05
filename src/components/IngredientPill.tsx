@@ -9,7 +9,7 @@ const IngredientPill = ({ ingredient, onRemove }: IngredientPillProps) => {
   return (
     <span className="ingredient-pill">
       {ingredient}
-      <button onClick={() => onRemove(ingredient)}>❌</button>
+      <button onClick={() => onRemove(ingredient)}>x</button>
     </span>
   );
 };

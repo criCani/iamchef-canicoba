@@ -17,7 +17,7 @@ const Home = ({ selectedIngredients, setSelectedIngredients, onSearch }: HomePro
 
   return (
     <div className="home-container">
-      <h1 className="home-title">Recipe Finder</h1>
+      <h1 className="home-title">What ingredients are we working with?</h1>
       <SearchBar
         onSearch={onSearch}
         selectedIngredients={selectedIngredients}

@@ -33,7 +33,7 @@ const App = () => {
   );
 
   return (
-    <div>
+    <div className="page-container">
       {page === 'home' && (
         <Home
           selectedIngredients={selectedIngredients}
@@ -47,6 +47,8 @@ const App = () => {
           recipes={filteredRecipes}
           onRecipeSelect={handleRecipeSelect}
           selectedIngredients={selectedIngredients}
+          setSelectedIngredients={setSelectedIngredients}
+          onSearch={handleSearch}
           onBack={() => {
             setSelectedIngredients([]);
             setPage('home');

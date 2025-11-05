@@ -1,45 +1,50 @@
-.card-recipe {
-  background-color: #fff;
-  border-radius: 15px;
+.recipe-card {
+  width: 100%;
+  border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: var(--card-bg);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+  cursor: pointer;
 }
 
-.card-recipe img {
+.recipe-card img {
   width: 100%;
   height: 180px;
   object-fit: cover;
+  display: block;
 }
 
-.card-body {
-  padding: 1rem;
-  text-align: center;
+.recipe-card h3 {
+  font-family: 'Pacifico', 'Georgia', serif;
+  font-size: 20px;
+  margin: 12px 16px 6px;
+  color: var(--espresso-brown);
 }
 
-.card-title {
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-}
+.recipe-summary { margin: 0 16px 8px; color: var(--mushroom-grey); font-size: 14px }
 
-.card-description {
-  font-size: 0.9rem;
-  color: #555;
-  margin-bottom: 1rem;
-}
-
-.card-info {
+.recipe-info {
   display: flex;
   justify-content: space-between;
-  font-size: 0.9rem;
-  margin-bottom: 1rem;
+  align-items: center;
+  padding: 0 16px 16px;
+  color: var(--mushroom-grey);
+  font-weight: 600;
 }
 
-.view-button {
-  background-color: #f2b63d;
-  color: white;
-  font-size: 1rem;
-  padding: 0.6rem 1rem;
-  border-radius: 30px;
-  width: 100%;
+.recipe-ingredients { padding: 0 16px 16px; display:flex; justify-content:space-between; align-items:center }
+.have-ingredients { color: var(--mushroom-grey); font-size:13px }
+.accent-pill-small { background: var(--terracotta); color: #fff; padding:4px 8px; border-radius:999px; font-weight:600 }
+.missing-count { color: var(--tomato-red); font-weight:700 }
+
+.view-recipe-btn {
+  display: block;
+  margin: 8px 16px 16px;
+  padding: 12px 18px;
+  background: var(--soft-lemon);
+  color: var(--espresso-brown);
+  border-radius: 999px;
+  text-align: center;
+  font-weight: 700;
+  box-shadow: 0 8px 14px rgba(0,0,0,0.08);
 }

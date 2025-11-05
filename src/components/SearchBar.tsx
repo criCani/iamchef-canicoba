@@ -33,22 +33,28 @@ const SearchBar = ({ onSearch, selectedIngredients, setSelectedIngredients }: Se
     if (!selectedIngredients.includes(ingredient.name.toLowerCase())) {
       const newIngredients = [...selectedIngredients, ingredient.name.toLowerCase()];
       setSelectedIngredients(newIngredients);
-      onSearch(newIngredients);
+      // Do NOT trigger onSearch immediately — only on explicit submit
       setSearchTerm('');
       setSuggestions([]);
     }
   };
 
+  const handleSubmit = () => {
+    // submit current selected ingredients to trigger recipe search
+    onSearch(selectedIngredients);
+  };
+
   return (
     <div className="search-container">
-      <div>
+      <div className="search-row">
         <input
           type="text"
           value={searchTerm}
           onChange={handleInputChange}
-          placeholder="Enter an ingredient..."
+          placeholder="Search ingredients"
           className="search-input"
         />
+        <button className="search-submit-btn" onClick={handleSubmit} aria-label="Search recipes">Search recipes</button>
       </div>
       {suggestions.length > 0 && (
         <div className="suggestions-container">
