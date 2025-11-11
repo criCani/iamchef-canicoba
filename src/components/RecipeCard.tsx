@@ -1,29 +1,44 @@
-import type { Recipe } from '../types/types';
+import type { IRecipe, IRecipeByIngredients } from '../types/types';
 import './RecipeCard.css';
 
 interface RecipeCardProps {
-  recipe: Recipe;
-  onClick: (recipe: Recipe) => void;
+  recipe: IRecipe | IRecipeByIngredients;
+  onClick: (recipe: IRecipe | IRecipeByIngredients) => void;
   selectedIngredients?: string[];
 }
 
 const RecipeCard = ({ recipe, onClick, selectedIngredients = [] }: RecipeCardProps) => {
-  // compute how many ingredients user has vs missing
-  const recipeIngredientNames = recipe.extendedIngredients.map(i => i.name.toLowerCase());
-  const have = recipeIngredientNames.filter(name => selectedIngredients.includes(name));
-  const missing = recipeIngredientNames.length - have.length;
+  const isRecipeByIngredients = (r: any): r is IRecipeByIngredients => (
+    r && Array.isArray(r.usedIngredients) && (typeof r.missedIngredientCount === 'number' || Array.isArray(r.missedIngredients))
+  );
+
+  const isBy = isRecipeByIngredients(recipe);
+
+  let have: string[] = [];
+  let missing = 0;
+
+  if (isBy) {
+    have = recipe.usedIngredients.map(i => (i.name || '').toLowerCase());
+    missing = typeof recipe.missedIngredientCount === 'number'
+      ? recipe.missedIngredientCount
+      : (recipe.missedIngredients || []).length;
+  } else {
+    // Fallback to original logic for full recipe objects
+    const recipeIngredientNames = (recipe.extendedIngredients || []).map(i => i.name.toLowerCase());
+    have = recipeIngredientNames.filter(name => selectedIngredients.includes(name));
+    missing = recipeIngredientNames.length - have.length;
+  }
   return (
     <div className="recipe-card" onClick={() => onClick(recipe)}>
       <img src={recipe.image} alt={recipe.title} />
       <h3>{recipe.title}</h3>
-      <p className="recipe-summary">{(recipe as any).summary || recipe.instructions || ''}</p>
       <div className="recipe-info">
-        <span className="recipe-time">⏱ {recipe.readyInMinutes} min</span>
-        <span className="recipe-servings">🍽 { (recipe as any).servings ?? '–' }</span>
+        <span className="recipe-time">⏱ {!isBy && (recipe as IRecipe).readyInMinutes ? `${(recipe as IRecipe).readyInMinutes} min` : '–'}</span>
+        <span className="recipe-servings">🍽 { !isBy ? ((recipe as any).servings ?? '–') : '–' }</span>
       </div>
       <div className="recipe-ingredients">
         <div className="have-ingredients">Your ingredients: <span className="accent-pill-small">{have.join(', ') || 'none'}</span></div>
-        <div className="missing-count">{missing} missing ingredients</div>
+        <div className="missing-count">{missing} missing ingredient{missing !== 1 ? 's' : ''}</div>
       </div>
       <button
         className="view-recipe-btn"

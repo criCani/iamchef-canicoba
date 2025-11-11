@@ -1,12 +1,12 @@
-import type { Recipe } from '../types/types';
+import type { IRecipe, IRecipeByIngredients } from '../types/types';
 import './ResultPage.css';
 import RecipeCard from '../components/RecipeCard';
 import SearchBar from '../components/SearchBar';
 import IngredientPill from '../components/IngredientPill';
 
 interface ResultPageProps {
-  recipes: Recipe[];
-  onRecipeSelect: (recipe: Recipe) => void;
+  recipes: (IRecipe | IRecipeByIngredients)[];
+  onRecipeSelect: (recipe: IRecipe | IRecipeByIngredients) => void;
   selectedIngredients: string[];
   setSelectedIngredients: (ingredients: string[]) => void;
   onSearch: (ingredients: string[]) => void;

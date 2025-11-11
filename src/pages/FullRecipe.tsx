@@ -1,8 +1,8 @@
-import type { Recipe } from '../types/types';
+import type { IRecipe } from '../types/types';
 import './FullRecipe.css';
 
 interface FullRecipeProps {
-  recipe: Recipe;
+  recipe: IRecipe;
   onBack: () => void;
 }
 

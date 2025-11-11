@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { ChangeEvent } from 'react';
-import type { Ingredient } from '../types/types';
+import type { IIngredient } from '../types/types';
 import ingredients from '../data/ingredients.json';
 import './SearchBar.css';
 
@@ -12,7 +12,7 @@ interface SearchBarProps {
 
 const SearchBar = ({ onSearch, selectedIngredients, setSelectedIngredients }: SearchBarProps) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [suggestions, setSuggestions] = useState<Ingredient[]>([]);
+  const [suggestions, setSuggestions] = useState<IIngredient[]>([]);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.toLowerCase();
@@ -20,7 +20,7 @@ const SearchBar = ({ onSearch, selectedIngredients, setSelectedIngredients }: Se
 
     // Filter ingredients based on search term
     const filtered = value
-      ? (ingredients as Ingredient[]).filter(
+      ? (ingredients as IIngredient[]).filter(
           (ingredient) => 
             ingredient.name.toLowerCase().includes(value) &&
             !selectedIngredients.includes(ingredient.name.toLowerCase())
@@ -29,7 +29,7 @@ const SearchBar = ({ onSearch, selectedIngredients, setSelectedIngredients }: Se
     setSuggestions(filtered);
   };
 
-  const handleSelectIngredient = (ingredient: Ingredient) => {
+  const handleSelectIngredient = (ingredient: IIngredient) => {
     if (!selectedIngredients.includes(ingredient.name.toLowerCase())) {
       const newIngredients = [...selectedIngredients, ingredient.name.toLowerCase()];
       setSelectedIngredients(newIngredients);

@@ -2,7 +2,10 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
+  height: 100vh;
+  width: 100%;
+  padding: 20px 15px;
 }
 
 .back-button {
@@ -24,9 +27,11 @@
 }
 
 .selected-ingredients-list {
+  display: flex;  
   background: transparent;
-  padding: 8px 0;
+  gap: 5px;
   color: var(--mushroom-grey);
+  padding-bottom: 10px;
 }
 
 .recipes-grid {
