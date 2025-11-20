@@ -77,7 +77,7 @@ const App = () => {
       break;
     default:
       mainContent = <Home onSuggestClick={handleSuggestClick} 
-      onBadgeRemove={handleSuggestedRemove} selectedIng={selectedIng} 
+      onPillRemove={handleSuggestedRemove} selectedIng={selectedIng} 
       onSearchClick={handleSearch} isDiscover={isDiscover}/>;
       break;
   }
