@@ -1,18 +1,21 @@
-import React from 'react';
-import Header from './Header';
 import './Layout.css';
 
 interface LayoutProps {
-  children?: React.ReactNode;
+  header: React.ReactNode;
+  main: React.ReactNode;
+  footer: React.ReactNode;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
-  return (
-    <div className="app-layout">
-      <Header />
-      {children}
-    </div>
-  );
+const Layout = ({ header, main, footer }: LayoutProps) => {
+	return (
+		<main className="layout-container">
+			<header className="layout-header">{header}</header>
+			<section className="layout-main">
+				{main}
+			</section>
+			{footer}
+		</main>
+	);
 };
 
 export default Layout;

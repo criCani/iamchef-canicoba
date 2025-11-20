@@ -1,73 +1,64 @@
-import { useState } from 'react';
-import type { ChangeEvent } from 'react';
+import { useEffect, useState } from 'react';
 import type { IIngredient } from '../types/types';
-import ingredients from '../data/ingredients.json';
 import './SearchBar.css';
+import { useDebounce } from '../hooks/useDebounce';
+import { getIngredientsUrl, useApi } from '../hooks/useApi';
+import SuggestionsList from './SuggestionsList';
 
 interface SearchBarProps {
-  onSearch: (ingredients: string[]) => void;
-  selectedIngredients: string[];
-  setSelectedIngredients: (ingredients: string[]) => void;
+  handleSuggestClick: (ing: IIngredient) => void;
 }
 
-const SearchBar = ({ onSearch, selectedIngredients, setSelectedIngredients }: SearchBarProps) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [suggestions, setSuggestions] = useState<IIngredient[]>([]);
+const SearchBar = ({ handleSuggestClick }: SearchBarProps) => {
+  // Stato che contiene il testo scritto dall’utente nella searchbar
+  const [searchTermIng, setSearchTermIng] = useState<string>("");
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.toLowerCase();
-    setSearchTerm(value);
+  // API - start
+  const [stateURL, setStateURL] = useState<string>("");
+  const debouncedSearchingIng = useDebounce(searchTermIng, 300);
 
-    // Filter ingredients based on search term
-    const filtered = value
-      ? (ingredients as IIngredient[]).filter(
-          (ingredient) => 
-            ingredient.name.toLowerCase().includes(value) &&
-            !selectedIngredients.includes(ingredient.name.toLowerCase())
-        )
-      : [];
-    setSuggestions(filtered);
-  };
-
-  const handleSelectIngredient = (ingredient: IIngredient) => {
-    if (!selectedIngredients.includes(ingredient.name.toLowerCase())) {
-      const newIngredients = [...selectedIngredients, ingredient.name.toLowerCase()];
-      setSelectedIngredients(newIngredients);
-      // Do NOT trigger onSearch immediately — only on explicit submit
-      setSearchTerm('');
-      setSuggestions([]);
+  const { data: filteredIngredients, loading, error } = useApi<IIngredient[]>(stateURL);
+  
+  useEffect(() => {
+    // Se c'è del testo da cercare
+    if (debouncedSearchingIng) {
+      // Fai la chiamata API solo ora (dopo 300ms di pausa nella digitazione)
+      // TODO: Inserire il filtro degli ingredienti
+      setStateURL(getIngredientsUrl(debouncedSearchingIng));
     }
-  };
+  }, [debouncedSearchingIng])
+  // API - end
 
-  const handleSubmit = () => {
-    // submit current selected ingredients to trigger recipe search
-    onSearch(selectedIngredients);
+  const handleClick = (ing: IIngredient) => {
+    handleSuggestClick(ing);
+    setSearchTermIng("");
   };
 
   return (
     <div className="search-container">
-      <div className="search-row">
+      <div>
         <input
           type="text"
-          value={searchTerm}
-          onChange={handleInputChange}
-          placeholder="Search ingredients"
-          className="search-input"
+          name="search-bar"
+          id="search-bar"
+          placeholder="Search ingredients..."
+          className="w-full bg-transparent border-none focus:outline-none text-gray-800 placeholder:text-gray-400"
+          value={searchTermIng}
+          onChange={(e) => setSearchTermIng(e.target.value)}
         />
-        <button className="search-submit-btn" onClick={handleSubmit} aria-label="Search recipes">Search recipes</button>
       </div>
-      {suggestions.length > 0 && (
-        <div className="suggestions-container">
-          {suggestions.map((ingredient) => (
-            <div
-              key={ingredient.id}
-              onClick={() => handleSelectIngredient(ingredient)}
-              className="suggestion-item"
-            >
-              {ingredient.name}
-            </div>
-          ))}
-        </div>
+
+      {error && <p className="text-red-500 mt-2">Errore: {error}</p>}
+
+      {/* Messaggio di caricamento mentre aspetto la risposta */}
+      {loading && <p>Caricamento...</p>}
+      
+      {/* Se l’utente sta digitando, mostro i suggerimenti filtrati */}
+      {filteredIngredients && (
+        <SuggestionsList
+          ingredients={filteredIngredients}
+          handleClick={handleClick}
+        />
       )}
     </div>
   );

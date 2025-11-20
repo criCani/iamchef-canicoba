@@ -1,15 +1,22 @@
+import type { IIngredient } from '../types/types';
 import './IngredientPill.css';
 
 interface IngredientPillProps {
-  ingredient: string;
-  onRemove: (ingredient: string) => void;
+  id: string,
+  ingredient: IIngredient,
+  handleRemove: (ing: IIngredient) => void
 }
 
-const IngredientPill = ({ ingredient, onRemove }: IngredientPillProps) => {
+const IngredientPill = ({ id, ingredient, handleRemove }: IngredientPillProps) => {
   return (
-    <span className="ingredient-pill">
-      {ingredient}
-      <button onClick={() => onRemove(ingredient)}>x</button>
+    <span
+      id={id}>
+      {ingredient.name}
+      
+      <button
+        onClick={() => handleRemove(ingredient)}>
+        <p>X</p>
+      </button>
     </span>
   );
 };
