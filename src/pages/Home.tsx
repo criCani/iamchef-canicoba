@@ -1,39 +1,34 @@
-import SearchBar from '../components/SearchBar';
-import './Home.css';
-import type { IIngredient } from '../types/types';
-import SearchButton from '../components/SearchButton';
-import PillsList from '../components/PillsList';
+import type { IIngredient } from "../types/types";
+import SearchBar from "../components/Searchbar";
+import SelectedList from "../components/SelectedList";
+import DiscoverRecipeBtn from "../components/DiscoverRecipeBtn";
+import '../styles/Home.css';
 
-interface HomeProps {
+type HomeProps = {
   onSuggestClick: (ing: IIngredient) => void,
-  onPillRemove: (ing: IIngredient) => void,
+  onBadgeRemove: (ing: IIngredient) => void,
   selectedIng: IIngredient[]
   onSearchClick: () => void
   isDiscover: boolean
 }
 
-const Home = ({onSuggestClick, onPillRemove, selectedIng, onSearchClick, isDiscover }: HomeProps) => {
+const Home = ({onSuggestClick, onBadgeRemove, selectedIng, onSearchClick, isDiscover }: HomeProps) => {
   return (
-    <div className="home-container">
-      <h1 className="home-title">
-        What ingredients are we working with?
-      </h1>
-      <SearchBar
-        handleSuggestClick={onSuggestClick}
-      />
-      
-      <SearchButton 
-        ingredients={selectedIng} 
-        onSearchClick={onSearchClick} 
-        isDiscover={isDiscover}
-      />
+     <div className="search-page-container">
+        <h1 className="search-page-title">
+            What ingredients are we working with?
+        </h1>
+        <SearchBar handleSuggestClick={onSuggestClick} />
 
-      <PillsList 
-        ingredients={selectedIng} 
-        handleRemove={onPillRemove} 
-      />
+        <SelectedList 
+            ingredients={selectedIng} 
+            handleRemove={onBadgeRemove} 
+        />
+
+        <DiscoverRecipeBtn ingredients={selectedIng} onSearchClick={onSearchClick} isDiscover={isDiscover}/>
     </div>
-  );
-};
+    )
+}
+
 
 export default Home;

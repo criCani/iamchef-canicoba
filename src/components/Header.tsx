@@ -1,8 +1,7 @@
 const Header = () => {
-  return (
-    <header style={{ visibility: 'hidden'}}>
-    </header>
-  );
-};
+    return (
+        <div></div>
+    )
+}
 
-export default Header;
+export default Header

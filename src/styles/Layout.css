@@ -1,0 +1,23 @@
+.layout-main {
+  width: 100vw;
+  max-width: 384px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  background: var(--warm-beige);
+  overflow: hidden;
+}
+
+.layout-header {
+  /* Header styling if needed */
+}
+
+.layout-section {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  min-height: 0;
+  overflow: hidden;
+}

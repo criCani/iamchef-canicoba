@@ -1,6 +1,8 @@
 import React from "react";
+import '../styles/ScrollBtn.css';
 
-//* Questo componente definisce lo stato generico dei bottoni di scroll e di visualizza dettagli, in base al nome del file dell'icona, riceve l'indice corrente e lo aggiorna, oppure cambia pagina
+// Bottone di navigazione tra ricette: calcola il nuovo indice rispettando i limiti.
+// Si evita di modificare l'indice fuori range per non causare errori di accesso.
 
 type ScrollBtnProps = {
   currentIndex: number,
@@ -20,7 +22,7 @@ const ScrollBtn: React.FC<ScrollBtnProps> = ({
   opacity
 }: ScrollBtnProps) => {
 
-  //# definisco incrementare o decrementare l'indice
+  // Calcolo dell'indice successivo restando dentro [0, maxIndex]
   const params = isIncrement 
                   ? currentIndex < maxIndex
                     ? currentIndex = currentIndex + 1
@@ -31,12 +33,10 @@ const ScrollBtn: React.FC<ScrollBtnProps> = ({
 
   return (
     <button
-      className={`${opacity} ${cursor}`}
+      className={`scroll-btn ${cursor} ${opacity}`}
       onClick={() => onClick(params)}
     >
-
-      <img className={`w-14 h-14 ${!isIncrement && "rotate-y-180"}`} src={`/icons/nextRecipeIcon.svg`} />
-    
+      {isIncrement ? '→' : '←'}
     </button>
   );
 };

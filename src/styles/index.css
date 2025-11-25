@@ -1,0 +1,30 @@
+:root {
+  --colors-labels-primary: rgba(0, 0, 0, 1);
+  --espresso-brown: rgba(62, 39, 35, 1);
+  --mushroom-grey: rgba(183, 169, 154, 1);
+  --olive-green: rgba(108, 158, 79, 1);
+  --pure-white: rgba(255, 255, 255, 1);
+  --soft-lemon: rgba(251, 192, 45, 1);
+  --terracotta: rgba(210, 106, 78, 1);
+  --tomato-red: rgba(229, 57, 53, 1);
+  --warm-beige: rgba(255, 247, 231, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Crimson Text', serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: black;
+}
+
+button {
+  border: none;
+  background: none;
+  font-family: inherit;
+}

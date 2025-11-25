@@ -5446,9 +5446,9 @@ export const ingredientsMock: IIngredient[] = [
     "name": "round tip steak",
     "image": "round-steak.jpg"
   }
-  ];
+];
 
-  export const recipesMock: IRecipeDetails[] = [
+export const recipesMock: IRecipeDetails[] = [
     {
     "id": 655589,
     "image": "https://img.spoonacular.com/recipes/655589-556x370.jpg",
@@ -5714,3 +5714,6 @@ export const ingredientsMock: IIngredient[] = [
     "spoonacularSourceUrl": "https://spoonacular.com/penne-with-goat-cheese-and-basil-655589"
 }
 ];
+
+// Fallback mock per quando non ci sono dati
+export const fallbackMock: IRecipeByIng = recipesByIngMock[0];

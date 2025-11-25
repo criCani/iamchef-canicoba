@@ -1,5 +1,6 @@
 import type { IIngredient } from "../types/types"
-import IngredientPill from "./IngredientPill"
+import SelectedItem from "./SelectedItem"
+import '../styles/SelectedItem.css';
 
 type SelectedListProps = {
     ingredients: IIngredient[],
@@ -8,11 +9,11 @@ type SelectedListProps = {
 
 const SelectedList = ({ ingredients, handleRemove }: SelectedListProps) => {
   return (
-    <div>
+    <div className="selected-list">
     {ingredients.map((ingredient, index) => (
-        <IngredientPill 
+        <SelectedItem 
             key={index.toString()}
-            id={index.toString()}
+            id={index.toString()} 
             ingredient={ingredient} 
             handleRemove={handleRemove} />
     ))}

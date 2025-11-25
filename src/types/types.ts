@@ -1,9 +1,15 @@
+// Modelli dati derivati dalle risposte Spoonacular.
+// Gli alias (IngredientInterface / RecipeInterface) servono per retrocompatibilità in eventuali refactor graduali.
+// Qualsiasi cambiamento di struttura API va isolato qui per minimizzare impatti sul resto dell'app.
 // INGREDIENTS
 export interface IIngredient {
   id: number;
   name: string;
   image: string;
 }
+
+// Alias per retrocompatibilità (preferire IIngredient nei nuovi file)
+export type IngredientInterface = IIngredient;
 
 // RECIPES
 export interface IRecipeDetails {
@@ -101,7 +107,7 @@ export interface IStepEquipment {
   image?: string;
 }
 
-// RECIPES BY INGREDIENTS
+// Ricette filtrate per ingredienti (risultato della ricerca principale)
 export interface IRecipeByIng {
   id: number;
   title: string;
@@ -129,3 +135,6 @@ export interface IRecipeByIngIngredient {
   image: string;
   extendedName?: string;
 }
+
+// Alias per retrocompatibilità (preferire IRecipeByIng nei nuovi file)
+export type RecipeInterface = IRecipeByIng;

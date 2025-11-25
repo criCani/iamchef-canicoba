@@ -1,84 +1,135 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react'
+import Layout from "./components/Layout"
+import Header from './components/Header'
+import Footer from './components/Footer'
+import IntroPage from './pages/IntroPage'
+import type { IRecipeByIng, IIngredient, IRecipeDetails } from './types/types'
 import type { CurrentPage } from './types/pages'
-import Header from './components/Header';
-import Footer from './components/Footer';
-import Home from './pages/Home';
-import ResultPage from './pages/ResultPage';
-import FullRecipe from './pages/FullRecipe';
-import Layout from './components/Layout';
-import type { IRecipeDetails, IRecipeByIng, IIngredient } from './types/types';
-import './components/Layout.css';
-import { recipesMock } from './mock/mock';
+import SearchResults from './pages/SearchResults'
+import Home from './pages/Home'
+import { FullRecipe } from './pages/FullRecipe'
+import { getRecipesByIngredientsUrl, getRecipeInformationUrl } from './hooks/useApi'
 
-const App = () => {
+// Root dell'app: gestisce la navigazione "manuale" tra viste e centralizza
+// 1) Ingredienti selezionati
+// 2) Ricette risultanti da una ricerca
+// 3) Dettagli di una ricetta
+// La pagina "intro" viene mostrata se manca la chiave API nel localStorage.
+// Non si usa un router perché la navigazione è lineare e guidata dal flusso.
+
+function App() {
+  // Pagina corrente (gestione semplice dello stato di navigazione)
   const [currentPage, setCurrentPage] = useState<CurrentPage>({currentPage: {page: "home"}})
+  // Ingredienti selezionati dall'utente per la ricerca ricette
   const [ selectedIng, setSelectedIng ] = useState<IIngredient[]>([])
-  const [ recipes, setRecipes ] = useState<IRecipeDetails[]>([])
-
-  // variabile di stato per cambiare la scritta sul bottone quando viene cliccato
+  // Risultati ricette dalla chiamata API
+  const [ recipes, setRecipes ] = useState<IRecipeByIng[]>([])
+  // Spinner / stato del bottone di ricerca (evita richieste duplicate)
   const [ isDiscover, setIsDiscover ] = useState<boolean>(false)
 
-  // funzione per gestire l'indice della ricetta
-  const [currentIndex, setCurrentIndex] = useState<number>(0)
-
-  const handleSearch = async () => {
+  // Avvia la ricerca ricette: costruisce URL, esegue fetch e passa alla pagina risultati.
+  // Gestisce fallback se l'API non ritorna risultati.
+  const handleSearchClick = async () => {
     setIsDiscover(true)
+    setCurrentIndex(0)
 
-    setCurrentIndex(0);
-    //TODO: Implementare reale chiamata api
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    setRecipes(recipesMock); //popolo l'array recipes[] con i dati del mock per simulare la chiamata api
-
-    //TODO: devo popolare l'array recipes[] con dei dati (uso il mock già presente nel progetto)
-    console.log(selectedIng);
-    setCurrentPage({ currentPage: {page: "results"} })
-    setIsDiscover(false)
-  };
-
-  // funzione per gestire la selezione da un elemento suggerito
-  const handleSuggestClick = (ingredient: IIngredient) => {
-    if (selectedIng.includes(ingredient)) {
-      return
+    try {
+      const url = getRecipesByIngredientsUrl(selectedIng, { ranking: 1, ignorePantry: true })
+      const resp = await fetch(url)
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`)
+      const json = (await resp.json()) as IRecipeByIng[]
+      if (Array.isArray(json) && json.length > 0) {
+        setRecipes(json)
+        setCurrentPage({ currentPage: { page: 'results' } })
+      } else {
+        console.warn('Nessun risultato trovato per gli ingredienti selezionati')
+      }
+    } catch (e) {
+      console.error('Errore chiamata ricette per ingredienti:', e)
+    } finally {
+      setIsDiscover(false)
     }
-    setSelectedIng(prev => [...prev, ingredient])
   }
 
-  const handleSuggestedRemove = (ingredient: IIngredient) => {
-    const filtArray = selectedIng.filter(item => item != ingredient);
+  // Aggiunge un ingrediente suggerito evitando duplicati.
+  const handleSuggestClick = (ing: IIngredient) => {
+    if (selectedIng.includes(ing)) {
+      return
+    }
+    setSelectedIng(prev => [...prev, ing])
+  }
+
+  // const handleSetCurrentPage = (page: currentPage) => setCurrentPage(page)
+
+  // Rimuove un ingrediente precedentemente selezionato.
+  const handleSuggestedRemove = (ing: IIngredient) => {
+    const filtArray = selectedIng.filter(item => item != ing);
     setSelectedIng(filtArray)
   }
 
-  const handleRecipeDetailsClick = (fullRecipe: IRecipeDetails) => {
-    setCurrentPage({ currentPage: {page: "full-recipe", recipeData: fullRecipe}})
+  // Recupera i dettagli completi di una singola ricetta e naviga alla vista dedicata.
+  const handleRecipeDetailsClick = (recipe: IRecipeByIng) => {
+    void (async () => {
+      try {
+        const url = getRecipeInformationUrl(recipe.id)
+        console.log("URL richiesta:", url)
+        const resp = await fetch(url)
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`)
+        const json = (await resp.json()) as IRecipeDetails
+        setCurrentPage({ currentPage: { page: 'full-recipe', recipeData: json } })
+      } catch (e) {
+        console.error('Errore dettagli ricetta:', e)
+      }
+    })()
   }
 
+  // Torna alla pagina iniziale per nuova selezione ingredienti.
   const goToHomepage = () => {
     setCurrentPage({currentPage: {page: "home"}})
   }
 
-  const handleClickBack = (id: number) => {
+  // Gestione ritorno dalla pagina dettaglio alla lista risultati.
+  const handleClickBack = (id:number) => {
     setCurrentPage({
       currentPage: {page: 'results'},
       id: id
     })
   }
 
+  // Indice della ricetta corrente mostrata nei risultati (navigazione incrementale)
+  const [currentIndex, setCurrentIndex] = useState<number>(0)
+
+  // La pagina "intro" raccoglie e persiste la chiave API la prima volta.
+
+  useEffect(() => {
+    // All'avvio controlla presenza della chiave API per decidere la prima vista.
+    const localKey = typeof window !== 'undefined' ? window.localStorage.getItem('spoonacular_api_key') : null
+    if (!localKey) {
+      setCurrentPage({ currentPage: { page: 'intro' } })
+    }
+  }, [])
+
   const handleSetCurrentIndex = (index: number) => {
     setCurrentIndex(index)
   }
 
+  // Determina dinamicamente il contenuto principale in base allo stato di navigazione.
   let mainContent = null;
+
   switch (currentPage.currentPage.page) {
+    case "intro":
+      mainContent = <IntroPage onSaved={() => setCurrentPage({ currentPage: { page: 'home' } })} />
+      break;
     case "results":
-      mainContent = <ResultPage recipes={recipes} onRecipeDetailsClick={handleRecipeDetailsClick} goToHomepage={goToHomepage} currentIndex={currentIndex} setCurrentIndex={handleSetCurrentIndex} />
+      mainContent = <SearchResults recipes={recipes} onRecipeDetailsClick={handleRecipeDetailsClick} goToHomepage={goToHomepage} currentIndex={currentIndex} setCurrentIndex={handleSetCurrentIndex} />
       break;
     case "full-recipe":
       mainContent = <FullRecipe goToBack={handleClickBack} id={0} recipeData={currentPage.currentPage.recipeData!}/>
       break;
     default:
       mainContent = <Home onSuggestClick={handleSuggestClick} 
-      onPillRemove={handleSuggestedRemove} selectedIng={selectedIng} 
-      onSearchClick={handleSearch} isDiscover={isDiscover}/>;
+      onBadgeRemove={handleSuggestedRemove} selectedIng={selectedIng} 
+      onSearchClick={handleSearchClick} isDiscover={isDiscover}/>;
       break;
   }
 
@@ -88,7 +139,7 @@ const App = () => {
       main={mainContent}
       footer={<Footer />}
     />
-  );
-};
+  )
+}
 
-export default App;
+export default App

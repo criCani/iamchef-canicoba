@@ -1,4 +1,5 @@
 import ScrollBtn from "./ScrollBtn"
+import '../styles/ScrollBtn.css';
 
 type ScrollBtnSectionProps = {
   currentIndex: number
@@ -10,7 +11,7 @@ type ScrollBtnSectionProps = {
 export function ScrollBtnSection({ currentIndex, setCurrentIndex, maxIndex, goToHomepage }: ScrollBtnSectionProps) {
 
   return (
-    <div className="py-2 flex gap-3 justify-center items-center">
+    <div className="scroll-btn-section">
 
           <ScrollBtn 
             currentIndex={currentIndex}
@@ -22,11 +23,10 @@ export function ScrollBtnSection({ currentIndex, setCurrentIndex, maxIndex, goTo
           />
 
         <div 
-          className="flex w-12 h-12 cursor-pointer shrink-0"
+          className="scroll-btn-logo-container"
           onClick={goToHomepage}
         >
-          <img src="/icons/iAmChef_Logo.svg" alt="Logo" className="w-full h-full rounded-lg"/>
-
+          🏠
         </div>
         
         <ScrollBtn 

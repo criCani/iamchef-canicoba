@@ -1,0 +1,32 @@
+.discover-recipes-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.discover-recipes-meta {
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  color: var(--text-secondary, #555);
+}
+
+.results-counter {
+  font-weight: 600;
+}
+
+.discover-recipes-card-wrapper {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.discover-recipes-btn-section {
+  flex-shrink: 0;
+}
