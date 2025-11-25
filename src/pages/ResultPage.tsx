@@ -1,54 +1,38 @@
-import type { IRecipe, IRecipeByIngredients } from '../types/types';
+import type { IRecipeByIng } from '../types/types';
 import './ResultPage.css';
 import RecipeCard from '../components/RecipeCard';
 import SearchBar from '../components/SearchBar';
-import IngredientPill from '../components/IngredientPill';
+import PillsList from '../components/PillsList';
+import { ScrollBtnSection } from '../components/ScrollBtnSection';
 
 interface ResultPageProps {
-  recipes: (IRecipe | IRecipeByIngredients)[];
-  onRecipeSelect: (recipe: IRecipe | IRecipeByIngredients) => void;
-  selectedIngredients: string[];
-  setSelectedIngredients: (ingredients: string[]) => void;
-  onSearch: (ingredients: string[]) => void;
-  onBack: () => void;
+  recipes: IRecipeByIng[];
+  onRecipeSelect: (recipe: IRecipeByIng) => void;
+  goToHomepage: () => void
+  currentIndex: number
+  setCurrentIndex: (index: number) => void
 }
 
-const ResultPage = ({ recipes, onRecipeSelect, selectedIngredients, setSelectedIngredients, onSearch, onBack }: ResultPageProps) => {
-  const handleRemove = (ingredient: string) => {
-    const newList = selectedIngredients.filter(i => i !== ingredient);
-    setSelectedIngredients(newList);
-  };
+function ResultPage({ recipes, onRecipeSelect, goToHomepage, currentIndex, setCurrentIndex }: ResultPageProps) {
+
   return (
-    <div className="results-container">
-      <button className="back-button" onClick={onBack}>Back to Home</button>
-
-      <SearchBar
-        onSearch={onSearch}
-        selectedIngredients={selectedIngredients}
-        setSelectedIngredients={setSelectedIngredients}
-      />
-
-      <div className="selected-ingredients-list">
-        {selectedIngredients.length > 0 ? (
-          selectedIngredients.map((ing, i) => (
-            <IngredientPill key={i} ingredient={ing} onRemove={() => handleRemove(ing)} />
-          ))
-        ) : (
-          <p className="muted-text">No ingredients selected</p>
-        )}
+    <main
+      id="recipe-card-container"
+    >
+      <div>
+        <RecipeCard recipe={recipes[currentIndex]} onClick={onRecipeSelect} />
       </div>
 
-      <div className="recipes-grid">
-        {recipes.map(recipe => (
-          <RecipeCard
-            key={recipe.id}
-            recipe={recipe}
-            onClick={onRecipeSelect}
-            selectedIngredients={selectedIngredients}
-          />
-        ))}
+      <div>
+        <ScrollBtnSection
+          currentIndex={currentIndex} 
+          maxIndex={recipes.length-1} 
+          setCurrentIndex={setCurrentIndex}
+          goToHomepage={goToHomepage}
+        />
       </div>
-    </div>
+
+    </main>
   );
 };
 
