@@ -9,6 +9,8 @@ import SearchResults from './pages/SearchResults'
 import Home from './pages/Home'
 import { FullRecipe } from './pages/FullRecipe'
 import { getRecipesByIngredientsUrl, getRecipeInformationUrl } from './hooks/useApi'
+import useModeStore from './store/useModeStore'
+import { getMockDataForUrl, simulateNetworkDelay } from './mock/mockService'
 
 // Root dell'app: gestisce la navigazione "manuale" tra viste e centralizza
 // 1) Ingredienti selezionati
@@ -26,6 +28,13 @@ function App() {
   const [ recipes, setRecipes ] = useState<IRecipeByIng[]>([])
   // Spinner / stato del bottone di ricerca (evita richieste duplicate)
   const [ isDiscover, setIsDiscover ] = useState<boolean>(false)
+  const mode = useModeStore((s) => s.mode)
+
+  // Resetta gli ingredienti quando cambia la modalità
+  useEffect(() => {
+    setSelectedIng([])
+    setRecipes([])
+  }, [mode])
 
   // Avvia la ricerca ricette: costruisce URL, esegue fetch e passa alla pagina risultati.
   // Gestisce fallback se l'API non ritorna risultati.
@@ -35,9 +44,20 @@ function App() {
 
     try {
       const url = getRecipesByIngredientsUrl(selectedIng, { ranking: 1, ignorePantry: true })
-      const resp = await fetch(url)
-      if (!resp.ok) throw new Error(`HTTP ${resp.status}`)
-      const json = (await resp.json()) as IRecipeByIng[]
+      
+      let json: IRecipeByIng[]
+      
+      if (mode === 'mock') {
+        // Modalità mock: usa dati simulati
+        await simulateNetworkDelay(300)
+        json = getMockDataForUrl(url) as IRecipeByIng[]
+      } else {
+        // Modalità API: chiamata reale
+        const resp = await fetch(url)
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`)
+        json = (await resp.json()) as IRecipeByIng[]
+      }
+      
       if (Array.isArray(json) && json.length > 0) {
         setRecipes(json)
         setCurrentPage({ currentPage: { page: 'results' } })
@@ -73,9 +93,20 @@ function App() {
       try {
         const url = getRecipeInformationUrl(recipe.id)
         console.log("URL richiesta:", url)
-        const resp = await fetch(url)
-        if (!resp.ok) throw new Error(`HTTP ${resp.status}`)
-        const json = (await resp.json()) as IRecipeDetails
+        
+        let json: IRecipeDetails
+        
+        if (mode === 'mock') {
+          // Modalità mock: usa dati simulati
+          await simulateNetworkDelay(300)
+          json = getMockDataForUrl(url) as IRecipeDetails
+        } else {
+          // Modalità API: chiamata reale
+          const resp = await fetch(url)
+          if (!resp.ok) throw new Error(`HTTP ${resp.status}`)
+          json = (await resp.json()) as IRecipeDetails
+        }
+        
         setCurrentPage({ currentPage: { page: 'full-recipe', recipeData: json } })
       } catch (e) {
         console.error('Errore dettagli ricetta:', e)
@@ -99,13 +130,21 @@ function App() {
   // Indice della ricetta corrente mostrata nei risultati (navigazione incrementale)
   const [currentIndex, setCurrentIndex] = useState<number>(0)
 
-  // La pagina "intro" raccoglie e persiste la chiave API la prima volta.
+  // La pagina "intro" raccoglie e persiste la chiave API la prima volta o scelta modalità mock.
 
   useEffect(() => {
-    // All'avvio controlla presenza della chiave API per decidere la prima vista.
+    // All'avvio controlla presenza della configurazione (API key o modalità) per decidere la prima vista.
+    const localMode = typeof window !== 'undefined' ? window.localStorage.getItem('app_data_mode') : null
     const localKey = typeof window !== 'undefined' ? window.localStorage.getItem('spoonacular_api_key') : null
-    if (!localKey) {
+    
+    // Se non c'è modalità salvata, o se modalità è API ma manca la chiave, mostra intro
+    if (!localMode) {
       setCurrentPage({ currentPage: { page: 'intro' } })
+    } else {
+      const modeData = localMode ? JSON.parse(localMode) : null
+      if (modeData?.state?.mode === 'api' && !localKey) {
+        setCurrentPage({ currentPage: { page: 'intro' } })
+      }
     }
   }, [])
 
@@ -133,9 +172,14 @@ function App() {
       break;
   }
 
+  // Gestione accesso alle impostazioni da qualsiasi pagina
+  const handleSettingsClick = () => {
+    setCurrentPage({ currentPage: { page: 'intro' } })
+  }
+
   return (
     <Layout
-      header={<Header />}
+      header={<Header onSettingsClick={currentPage.currentPage.page !== 'intro' ? handleSettingsClick : undefined} />}
       main={mainContent}
       footer={<Footer />}
     />

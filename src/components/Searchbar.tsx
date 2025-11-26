@@ -54,7 +54,7 @@ const SearchBar = ({ handleSuggestClick }: SearchbarProps) => {
       {error && <p className="searchbar-error">Error: {error}</p>}
       {loading && <p>Loading...</p>}
       
-      {filteredIngredients && (
+      {filteredIngredients && searchingIng  && (
         <SuggestList
           ingredients={filteredIngredients}
           handleClick={handleClick}

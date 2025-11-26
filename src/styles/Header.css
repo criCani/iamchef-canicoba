@@ -1,0 +1,113 @@
+.app-header {
+  background: var(--pure-white);
+  padding: 0.75rem 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.logo-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  object-fit: contain;
+}
+
+.logo-text {
+  font-family: 'Lobster', cursive;
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--espresso-brown);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.mode-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(207, 107, 76, 0.1);
+  padding: 0.4rem 0.85rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(207, 107, 76, 0.2);
+}
+
+.mode-badge-icon {
+  font-size: 1rem;
+}
+
+.mode-badge-text {
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--espresso-brown);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.settings-button {
+  background: transparent;
+  border: 2px solid rgba(66, 45, 32, 0.2);
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1.25rem;
+}
+
+.settings-button:hover {
+  background: rgba(207, 107, 76, 0.1);
+  border-color: var(--terracotta);
+  transform: rotate(30deg);
+}
+
+.settings-button:active {
+  transform: rotate(30deg) scale(0.95);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .app-header {
+    padding: 0.5rem 1rem;
+  }
+  
+  .logo-text {
+    font-size: 1.25rem;
+  }
+  
+  .logo-icon {
+    font-size: 1.5rem;
+  }
+  
+  .mode-badge-text {
+    font-size: 0.75rem;
+  }
+  
+  .settings-button {
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: 1.1rem;
+  }
+}

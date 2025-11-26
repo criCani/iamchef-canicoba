@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import useApiKeyStore from "../store/useApiKeyStore";
+import useModeStore from "../store/useModeStore";
+import { getMockDataForUrl, simulateNetworkDelay } from "../mock/mockService";
 import type { IIngredient } from "../types/types";
 
 export interface UseApiReturn<T> {
@@ -13,6 +15,7 @@ export function useApi<T = any>(url: string): UseApiReturn<T> {
   const [data, setData] = useState<T | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
+  const mode = useModeStore((s) => s.mode)
 
   useEffect(() => {
     // Flag di cancellazione: evita setState su componenti smontati (race / warning React).
@@ -22,11 +25,22 @@ export function useApi<T = any>(url: string): UseApiReturn<T> {
       try {
         setLoading(true)
         setError(null)
-        const response = await fetch(url)
-        const result = await response.json()
-        if (!cancelled) {
-          // Assumiamo formato Spoonacular con 'results'; se cambia l'API servirà adattare qui.
-          setData(result.results)
+        
+        // Se siamo in modalità mock, usa i dati mock
+        if (mode === 'mock') {
+          await simulateNetworkDelay(300); // Simula ritardo di rete
+          const mockData = getMockDataForUrl(url);
+          if (!cancelled) {
+            setData(mockData);
+          }
+        } else {
+          // Modalità API: chiamata reale
+          const response = await fetch(url)
+          const result = await response.json()
+          if (!cancelled) {
+            // Assumiamo formato Spoonacular con 'results'; se cambia l'API servirà adattare qui.
+            setData(result.results)
+          }
         }
       } catch (err) {
         if (!cancelled) {
@@ -41,7 +55,7 @@ export function useApi<T = any>(url: string): UseApiReturn<T> {
 
     if (url.length > 0) fetchData(); // Evita chiamate con URL vuoto.
     return () => { cancelled = true }
-  }, [url])
+  }, [url, mode])
 
   return { data, loading, error }
 }

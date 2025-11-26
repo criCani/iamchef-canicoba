@@ -1,16 +1,25 @@
 .selected-list {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 0.5rem;
   margin-top: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  width: 100%;
+  max-width: 100%;
+}
+
+.selected-list::-webkit-scrollbar {
+  display: none;
 }
 
 .selected-item {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
   white-space: nowrap;
+  flex-shrink: 0;
   border-radius: 9999px;
   background: var(--terracotta);
   color: var(--pure-white);
@@ -19,6 +28,7 @@
   font-weight: 400;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
   transition: all 0.2s;
+  scroll-snap-align: start;
 }
 
 .selected-item:hover {
