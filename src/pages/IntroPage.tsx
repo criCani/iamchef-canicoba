@@ -20,17 +20,21 @@ const IntroPage = ({ onSaved }: IntroPageProps) => {
   }
 
   return (
-    <div className="intro-page-container">
-      <h2 className="intro-page-title">Insert here your API key</h2>
-      <p className="intro-page-subtitle">The API key will be saved locally in your browser.</p>
-      <input
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        placeholder="Spoonacular API key"
-        className="intro-page-input"
-      />
-      <div className="intro-page-buttons">
-        <button onClick={handleSave} className="intro-page-save-button">Salva</button>
+    <div className="intro-page-page">
+      <div className="intro-page-card">
+        <div className="intro-page-container">
+          <h2 className="intro-page-title">Welcome to iChef</h2>
+          <p className="intro-page-subtitle">Insert your Spoonacular API key to continue, it will be saved locally in your browser.</p>
+          <input
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            placeholder="API key"
+            className="intro-page-input"
+          />
+          <div className="intro-page-buttons">
+            <button onClick={handleSave} className="intro-page-save-button">Save</button>
+          </div>
+        </div>
       </div>
     </div>
   )
