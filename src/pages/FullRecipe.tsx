@@ -82,7 +82,7 @@ export const FullRecipe = ({ id, recipeData, goToBack }: FullRecipeProps) => {
           onClick={() => goToBack(id)}
           className="recipe-details-back-button"
         >
-          🏠
+          ⬅️
         </button>
       </div>
     </div>

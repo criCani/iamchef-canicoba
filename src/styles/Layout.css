@@ -1,16 +1,13 @@
 .layout-main {
   width: 100vw;
-  max-width: 384px;
+  max-width: 402px;
   height: 100vh;
   display: flex;
   flex-direction: column;
   margin: 0 auto;
   background: var(--warm-beige);
   overflow: hidden;
-}
-
-.layout-header {
-  /* Header styling if needed */
+  border-radius: 32px;
 }
 
 .layout-section {

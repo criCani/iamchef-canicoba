@@ -51,8 +51,8 @@ const SearchBar = ({ handleSuggestClick }: SearchbarProps) => {
         </div>
       </div>
 
-      {error && <p className="searchbar-error">Errore: {error}</p>}
-      {loading && <p>Caricamento...</p>}
+      {error && <p className="searchbar-error">Error: {error}</p>}
+      {loading && <p>Loading...</p>}
       
       {filteredIngredients && (
         <SuggestList
