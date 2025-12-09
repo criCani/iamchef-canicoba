@@ -5,15 +5,16 @@ interface LayoutProps {
 	main: React.ReactNode;
 	footer: React.ReactNode;
 }
+
 const Layout = ({ header, main, footer }: LayoutProps) => {
 	return (
-		<main className="layout-main">
-			<header className="layout-header">{header}</header>
-			<section className="layout-section">
+		<div className="layout">
+			{header}
+			<main className="layout__main">
 				{main}
-			</section>
+			</main>
 			{footer}
-		</main>
+		</div>
 	);
 };
 

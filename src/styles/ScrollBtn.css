@@ -1,69 +1,37 @@
-.scroll-btn-section {
-  padding: 1rem 0;
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  align-items: center;
-  background: var(--warm-beige);
-}
-
 .scroll-btn {
-  width: 3.5rem;
-  height: 3.5rem;
-  background: var(--golden-yellow);
-  border-radius: 50%;
+  background: #1f2937;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  width: 46px;
+  height: 46px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s;
-}
-
-.scroll-btn:hover:not(.opacity-50) {
-  background: #f5b820;
-  transform: scale(1.05);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-}
-
-.scroll-btn img {
-  width: 100%;
-  height: 100%;
-  display: none;
-}
-
-.scroll-btn.rotate img {
-  transform: scaleX(-1);
-}
-
-.cursor-pointer {
+  font-size: 1.2rem;
   cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 10px 20px rgba(0, 0, 0, 0.25);
 }
 
-.cursor-default {
-  cursor: default;
+.scroll-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 12px 24px rgba(0, 0, 0, 0.3);
 }
 
-.opacity-50 {
-  opacity: 0.5;
+.scroll-btn:active:not(:disabled) {
+  transform: translateY(0);
 }
 
-.opacity-100 {
-  opacity: 1;
+.scroll-btn--disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
-.scroll-btn-logo-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 3rem;
-  height: 3rem;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
-.scroll-btn-logo {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+@media (max-width: 480px) {
+  .scroll-btn {
+    width: 42px;
+    height: 42px;
+    font-size: 1.1rem;
+  }
 }

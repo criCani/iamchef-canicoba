@@ -1,7 +1,7 @@
-import { useParams, useNavigate, useLocation } from 'react-router'
-import type { IRecipeDetails } from "../types/types"
-import { useRecipes } from '../contexts/RecipesContext'
-import '../styles/FullRecipe.css'
+import { useParams, useNavigate, useLocation } from 'react-router';
+import type { IRecipeDetails } from "../types/types";
+import { useRecipes } from '../contexts/RecipesContext';
+import '../styles/FullRecipe.css';
 
 /**
  * FullRecipe - Pagina dettaglio ricetta
@@ -29,25 +29,25 @@ import '../styles/FullRecipe.css'
  */
 
 interface LocationState {
-  recipeData?: IRecipeDetails
-  fromResults?: boolean
+  recipeData?: IRecipeDetails;
+  fromResults?: boolean;
 }
 
 export const FullRecipe = () => {
-  const { recipeId } = useParams()
-  const navigate = useNavigate()
-  const location = useLocation()
-  const { searchIngredients } = useRecipes()
+  const { recipeId } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { searchIngredients } = useRecipes();
   
   // Recupera dati ricetta dal navigation state
-  const locationState = location.state as LocationState | null
-  const recipe = locationState?.recipeData
-  const fromResults = locationState?.fromResults
+  const locationState = location.state as LocationState | null;
+  const recipe = locationState?.recipeData;
+  const fromResults = locationState?.fromResults;
 
   // Se mancano i dati, torna alla home
   if (!recipe || !recipeId) {
-    navigate('/', { replace: true })
-    return null
+    navigate('/', { replace: true });
+    return null;
   }
 
   // Torna alla pagina risultati con query string dal context
@@ -55,19 +55,29 @@ export const FullRecipe = () => {
     if (fromResults && searchIngredients) {
       // Torna a /results con stessi ingredienti
       // Le ricette sono già nel context
-      navigate(`/results?ingredients=${encodeURIComponent(searchIngredients)}`)
+      navigate(`/results?ingredients=${encodeURIComponent(searchIngredients)}`);
     } else {
       // Fallback: torna alla home
-      navigate('/')
+      navigate('/');
     }
-  }
+  };
 
   // La vista preferisce 'analyzedInstructions' (strutturato); se assente usa 'instructions' HTML.
   return (
-    <div className="recipe-details-container">
-      <div className="recipe-details-scroll">
-        <section className="recipe-details-card">
-          <div className="recipe-image-container">
+    <div className="full-recipe">
+      <button
+        type="button"
+        onClick={handleGoBack}
+        className="full-recipe__back-btn"
+        title="Torna indietro"
+      >
+        <span>⬅️</span>
+        <span>Indietro</span>
+      </button>
+
+      <div className="full-recipe__container">
+        <section className="full-recipe__content">
+          <div className="full-recipe__image-wrapper">
             <img
               src={
                 recipe.image?.length
@@ -75,69 +85,67 @@ export const FullRecipe = () => {
                   : "https://images.unsplash.com/photo-1547385203-cfe7977b9fd0?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1171"
               }
               alt={recipe.title || "Titolo non disponibile"}
-              className="recipe-image"
+              className="full-recipe__image"
             />
-            <div className="recipe-image-overlay" />
+            <div className="full-recipe__image-overlay" />
           </div>
 
-          <h1 className="recipe-details-title">
+          <h1 className="full-recipe__title">
             {recipe.title || "Ricetta sconosciuta"}
           </h1>
 
-          <div className="recipe-details-meta">
-            <div className="recipe-details-meta-item">
-              <span className="recipe-details-meta-icon">🕐</span>
-              <span className="recipe-details-meta-text">{recipe.readyInMinutes || 0} minutes</span>
+          <div className="full-recipe__meta">
+            <div className="full-recipe__meta-item">
+              <span className="full-recipe__meta-icon">🕐</span>
+              <span className="full-recipe__meta-text">{recipe.readyInMinutes || 0} minuti</span>
             </div>
-            <div className="recipe-details-meta-item">
-              <span className="recipe-details-meta-icon">💵</span>
-              <span className="recipe-details-meta-text">{recipe.cheap ? "Cheap" : "Not cheap"}!</span>
+            <div className="full-recipe__meta-item">
+              <span className="full-recipe__meta-icon">💵</span>
+              <span className="full-recipe__meta-text">{recipe.cheap ? "Economica" : "Non economica"}</span>
             </div>
-            <div className="recipe-details-meta-item">
-              <span className="recipe-details-meta-icon">🍽️</span>
-              <span className="recipe-details-meta-text">{recipe.servings || 0} servings</span>
+            <div className="full-recipe__meta-item">
+              <span className="full-recipe__meta-icon">🍽️</span>
+              <span className="full-recipe__meta-text">{recipe.servings || 0} porzioni</span>
             </div>
           </div>
 
-          <section className="recipe-details-section">
-            <h2 className="recipe-details-section-title">Main ingredients</h2>
-            <ul className="recipe-details-ingredients-list">
+          <section className="full-recipe__section">
+            <h2 className="full-recipe__section-title">
+              <span className="full-recipe__section-icon">🧂</span>
+              Ingredienti Principali
+            </h2>
+            <ul className="full-recipe__ingredients-list">
               {recipe.extendedIngredients && recipe.extendedIngredients.map((ing) => (
-                <li key={ing.id} className="recipe-details-ingredient-item">
-                  {ing.amount} {ing.measures.metric.unitShort} {ing.name}
+                <li key={ing.id} className="full-recipe__ingredient">
+                  <span className="full-recipe__ingredient-bullet">•</span>
+                  <span>{ing.amount} {ing.measures.metric.unitShort} {ing.name}</span>
                 </li>
               ))}
             </ul>
           </section>
 
-          <section className="recipe-details-section">
-            <h2 className="recipe-details-section-title">Instructions</h2>
-            <div className="recipe-details-instructions">
+          <section className="full-recipe__section">
+            <h2 className="full-recipe__section-title">
+              <span className="full-recipe__section-icon">📖</span>
+              Istruzioni
+            </h2>
+            <div className="full-recipe__instructions">
               {recipe.analyzedInstructions && recipe.analyzedInstructions.length > 0 && recipe.analyzedInstructions[0].steps.map((step) => (
-                <div key={step.number} className="recipe-details-instruction-step">
-                  <span className="recipe-details-instruction-number">{step.number}</span>
-                  <span className="recipe-details-instruction-text">
+                <div key={step.number} className="full-recipe__step">
+                  <span className="full-recipe__step-number">{step.number}</span>
+                  <span className="full-recipe__step-text">
                     {step.step}
                   </span>
                 </div>
               ))}
               {(!recipe.analyzedInstructions || recipe.analyzedInstructions.length === 0) && recipe.instructions && (
-                <p className="recipe-details-instruction-text" dangerouslySetInnerHTML={{ __html: recipe.instructions }} />
+                <div className="full-recipe__instructions-html" dangerouslySetInnerHTML={{ __html: recipe.instructions }} />
               )}
             </div>
           </section>
 
         </section>
       </div>
-      <div className="recipe-details-back-wrapper">
-        <button
-          type="button"
-          onClick={handleGoBack}
-          className="recipe-details-back-button"
-        >
-          ⬅️
-        </button>
-      </div>
     </div>
-  )
-}
+  );
+};

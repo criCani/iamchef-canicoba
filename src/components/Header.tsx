@@ -1,36 +1,36 @@
-import useModeStore from '../store/useModeStore'
-import '../styles/Header.css'
+import useModeStore from '../store/useModeStore';
+import '../styles/Header.css';
 
 type HeaderProps = {
-  onSettingsClick?: () => void
-}
+  onSettingsClick?: () => void;
+};
 
 const Header = ({ onSettingsClick }: HeaderProps) => {
-  const mode = useModeStore((s) => s.mode)
+  const mode = useModeStore((s) => s.mode);
 
   return (
-    <header className="app-header">
-      <div className="header-content">
-        <div className="header-logo">
-          <img src="/logo.png" alt="iChef Logo" className="logo-icon" />
-          <span className="logo-text">iChef</span>
+    <header className="header">
+      <div className="header__container">
+        <div className="header__logo">
+          <img src="/logo.png" alt="iChef Logo" className="header__logo-img" />
+          <span className="header__title">iChef</span>
         </div>
         
-        <div className="header-actions">
-          <div className="mode-badge">
-            <span className="mode-badge-icon">{mode === 'mock' ? '🎭' : '🌐'}</span>
-            <span className="mode-badge-text">{mode === 'mock' ? 'Mock' : 'API'}</span>
+        <div className="header__right">
+          <div className="header__mode">
+            <span className="header__mode-icon">{mode === 'mock' ? '🍳' : '🌐'}</span>
+            <span className="header__mode-label">{mode === 'mock' ? 'Mock' : 'API'}</span>
           </div>
           
           {onSettingsClick && (
-            <button onClick={onSettingsClick} className="settings-button" title="Settings">
-              ⚙️
+            <button onClick={onSettingsClick} title="Impostazioni" className="header__settings-btn">
+              <span role="img" aria-label="settings">⚙️</span>
             </button>
           )}
         </div>
       </div>
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

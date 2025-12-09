@@ -1,69 +1,74 @@
-.searchbar-wrapper {
-  position: relative;
-  width: 100%;
-  max-width: 360px;
-}
-
-.searchbar-focus-effect {
-  position: absolute;
-  inset: -2px;
-  border-radius: 2rem;
-  transition: all 0.3s;
-}
-
-.searchbar-focus-effect.focused {
-  border: 2px solid var(--espresso-brown);
-  opacity: 0.3;
-}
-
-.searchbar-focus-effect.unfocused {
-  border: 2px solid transparent;
-  opacity: 0;
-}
-
-.searchbar-container {
+.searchbar {
   position: relative;
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  background: var(--pure-white);
-  border-radius: 2rem;
-  padding: 1rem 1.5rem;
-  transition: all 0.3s;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  background: #fff;
+  border: 2px solid #e9ecef;
+  border-radius: 15px;
+  padding: 0.75rem 1.25rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.searchbar-container.focused {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+.searchbar:focus-within {
+  border-color: #ff6b35;
+  box-shadow: 0 4px 20px rgba(255, 107, 53, 0.15);
 }
 
-.searchbar-icon {
-  transition: color 0.3s;
-  color: var(--mushroom-grey);
-  font-size: 1.25rem;
-  flex-shrink: 0;
+.searchbar__icon {
+  font-size: 1.5rem;
+  color: #636e72;
+  transition: all 0.3s ease;
 }
 
-.searchbar-icon.focused {
-  color: var(--espresso-brown);
+.searchbar:focus-within .searchbar__icon {
+  color: #ff6b35;
+  transform: scale(1.1);
 }
 
-.searchbar-input {
+.searchbar__input-wrapper {
+  flex: 1;
+}
+
+.searchbar__input {
   width: 100%;
-  background: transparent;
   border: none;
   outline: none;
-  color: var(--espresso-brown);
-  font-family: 'Crimson Text', serif;
-  font-size: 1rem;
+  font-size: 1.05rem;
+  color: #2d3436;
+  background: transparent;
 }
 
-.searchbar-input::placeholder {
-  color: var(--mushroom-grey);
-  opacity: 0.7;
+.searchbar__input::placeholder {
+  color: #b2bec3;
 }
 
-.searchbar-error {
-  color: #ef4444;
+.searchbar__error {
+  color: #d63031;
+  font-size: 0.9rem;
   margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #ffebee;
+  border-radius: 8px;
+}
+
+.searchbar__loading {
+  color: #636e72;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .searchbar {
+    padding: 0.625rem 1rem;
+  }
+
+  .searchbar__input {
+    font-size: 1rem;
+  }
 }

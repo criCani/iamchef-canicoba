@@ -1,0 +1,49 @@
+.suggest-list {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 100;
+  animation: slideDown 0.3s ease-out;
+  border: 1px solid #e9ecef;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.suggest-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.suggest-list::-webkit-scrollbar-track {
+  background: #f8f9fa;
+  border-radius: 12px;
+}
+
+.suggest-list::-webkit-scrollbar-thumb {
+  background: #dfe6e9;
+  border-radius: 12px;
+}
+
+.suggest-list::-webkit-scrollbar-thumb:hover {
+  background: #b2bec3;
+}
+
+@media (max-width: 768px) {
+  .suggest-list {
+    max-height: 250px;
+  }
+}

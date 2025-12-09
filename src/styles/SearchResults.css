@@ -1,32 +1,193 @@
-.discover-recipes-container {
+.search-results {
   width: 100%;
-  height: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 1.25rem 0 5rem;
   display: flex;
   flex-direction: column;
-  gap: 0;
-  overflow: hidden;
-  min-height: 0;
+  gap: 1.25rem;
 }
 
-.discover-recipes-meta {
-  padding: 0.5rem 1rem;
+.search-results__hero {
+  background: linear-gradient(135deg, #fff5eb 0%, #ffe1c7 100%);
+  border-radius: 24px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.search-results__pill {
+  align-self: flex-start;
+  background: #fff;
+  color: #ff6b35;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  font-weight: 700;
   font-size: 0.95rem;
-  color: var(--text-secondary, #555);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.2);
 }
 
-.results-counter {
-  font-weight: 600;
+.search-results__subtitle {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #2d3436;
+  line-height: 1.3;
 }
 
-.discover-recipes-card-wrapper {
-  flex: 1;
-  min-height: 0;
-  overflow: hidden;
+.search-results__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.search-results__chip {
+  background: #fff;
+  color: #2d3436;
+  padding: 0.45rem 0.85rem;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  border: 1px solid #ffe8d6;
+}
+
+.search-results__search-panel {
+  background: #fff;
+  border-radius: 20px;
+  padding: 1rem 1.1rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.search-results__searchbar {
+  position: sticky;
+  top: 70px;
+  z-index: 5;
+}
+
+.search-results__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.search-results__action-btn {
+  border: none;
+  border-radius: 14px;
+  padding: 0.85rem 1rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.search-results__action-btn--primary {
+  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(255, 107, 53, 0.35);
+}
+
+.search-results__action-btn--primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.search-results__action-btn--ghost {
+  background: #f6f7f9;
+  color: #2d3436;
+  border: 1px solid #e9ecef;
+}
+
+.search-results__action-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+}
+
+.search-results__card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.search-results__status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-radius: 16px;
+  padding: 0.6rem 0.9rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+.search-results__index {
+  font-weight: 700;
+  color: #2d3436;
+  background: #f6f7f9;
+  padding: 0.4rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.95rem;
+}
+
+.search-results__dots {
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+  max-width: 100%;
+  overflow-x: auto;
+  padding-bottom: 0.15rem;
+  scrollbar-width: none;
+}
+
+.search-results__dots::-webkit-scrollbar {
+  display: none;
+}
+
+.search-results__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #dfe4ea;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.search-results__dot--active {
+  width: 22px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+}
+
+.search-results__navigation {
+  position: sticky;
+  bottom: 1rem;
   display: flex;
   justify-content: center;
-  align-items: center;
+  animation: slideUp 0.35s ease-out;
+  z-index: 10;
 }
 
-.discover-recipes-btn-section {
-  flex-shrink: 0;
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 480px) {
+  .search-results__actions {
+    grid-template-columns: 1fr;
+  }
+
+  .search-results__hero,
+  .search-results__search-panel {
+    border-radius: 18px;
+  }
 }
