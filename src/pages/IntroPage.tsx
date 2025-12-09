@@ -1,15 +1,24 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router'
 import useApiKeyStore from '../store/useApiKeyStore'
 import useModeStore, { type DataMode } from '../store/useModeStore'
-import '../styles/IntroPage.css';
+import '../styles/IntroPage.css'
 
-type IntroPageProps = {
-  onSaved?: () => void
-}
+/**
+ * IntroPage - Configurazione iniziale applicazione
+ * 
+ * Utilizzo React Router:
+ * - useNavigate: navigazione programmatica verso home dopo salvataggio
+ * - Replace: usa replace per evitare di tornare a intro con back button
+ * 
+ * Questa pagina permette di:
+ * - Scegliere modalità API (con chiave Spoonacular) o Mock (dati demo)
+ * - Salvare configurazione in localStorage tramite Zustand
+ * - Navigare automaticamente alla home dopo configurazione
+ */
 
-// Pagina iniziale: raccoglie la chiave API e la modalità (mock/api).
-// Permette configurazione runtime evitando rebuild quando cambiano le impostazioni.
-const IntroPage = ({ onSaved }: IntroPageProps) => {
+const IntroPage = () => {
+  const navigate = useNavigate()
   const apiKey = useApiKeyStore((s) => s.apiKey) ?? ''
   const setApiKey = useApiKeyStore((s) => s.setApiKey)
   const mode = useModeStore((s) => s.mode)
@@ -26,7 +35,9 @@ const IntroPage = ({ onSaved }: IntroPageProps) => {
       setApiKey(value)
     }
     setMode(selectedMode)
-    onSaved?.()
+    
+    // Naviga alla home con replace (evita tornare a intro con back button)
+    navigate('/', { replace: true })
   }
 
   const handleModeChange = (newMode: DataMode) => {

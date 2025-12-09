@@ -1,14 +1,67 @@
-import type { IRecipeDetails } from "../types/types.ts";
-import '../styles/FullRecipe.css';
+import { useParams, useNavigate, useLocation } from 'react-router'
+import type { IRecipeDetails } from "../types/types"
+import { useRecipes } from '../contexts/RecipesContext'
+import '../styles/FullRecipe.css'
 
-type FullRecipeProps = {
-  id: number;
-  recipeData: IRecipeDetails;
-  goToBack: (id: number) => void
-};
+/**
+ * FullRecipe - Pagina dettaglio ricetta
+ * 
+ * Utilizzo React Router:
+ * - useParams: legge recipeId dalla URL dinamica (/recipe/:recipeId)
+ * - useLocation: recupera dati ricetta dal navigation state
+ * - useNavigate: navigazione indietro verso /results
+ * 
+ * Utilizzo Context:
+ * - RecipesContext: recupera ingredienti della ricerca per ricostruire query string
+ * 
+ * Parametri URL:
+ * - recipeId: ID ricetta (parametro dinamico)
+ * 
+ * Navigation State:
+ * - recipeData: dettagli completi ricetta (IRecipeDetails)
+ * - fromResults: flag per sapere se tornare a /results o /
+ * 
+ * Flusso:
+ * 1. Riceve ID ricetta dalla URL (/recipe/123456)
+ * 2. Riceve dati ricetta completi dal navigation state
+ * 3. Mostra dettagli (immagine, ingredienti, istruzioni)
+ * 4. Bottone back → naviga a /results con ingredienti dal context
+ */
 
-export const FullRecipe = ({ id, recipeData, goToBack }: FullRecipeProps) => {
-  const recipe = recipeData; // Dati completi già ottenuti dal parent
+interface LocationState {
+  recipeData?: IRecipeDetails
+  fromResults?: boolean
+}
+
+export const FullRecipe = () => {
+  const { recipeId } = useParams()
+  const navigate = useNavigate()
+  const location = useLocation()
+  const { searchIngredients } = useRecipes()
+  
+  // Recupera dati ricetta dal navigation state
+  const locationState = location.state as LocationState | null
+  const recipe = locationState?.recipeData
+  const fromResults = locationState?.fromResults
+
+  // Se mancano i dati, torna alla home
+  if (!recipe || !recipeId) {
+    navigate('/', { replace: true })
+    return null
+  }
+
+  // Torna alla pagina risultati con query string dal context
+  const handleGoBack = () => {
+    if (fromResults && searchIngredients) {
+      // Torna a /results con stessi ingredienti
+      // Le ricette sono già nel context
+      navigate(`/results?ingredients=${encodeURIComponent(searchIngredients)}`)
+    } else {
+      // Fallback: torna alla home
+      navigate('/')
+    }
+  }
+
   // La vista preferisce 'analyzedInstructions' (strutturato); se assente usa 'instructions' HTML.
   return (
     <div className="recipe-details-container">
@@ -79,12 +132,12 @@ export const FullRecipe = ({ id, recipeData, goToBack }: FullRecipeProps) => {
       <div className="recipe-details-back-wrapper">
         <button
           type="button"
-          onClick={() => goToBack(id)}
+          onClick={handleGoBack}
           className="recipe-details-back-button"
         >
           ⬅️
         </button>
       </div>
     </div>
-  );
-};
+  )
+}
