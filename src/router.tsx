@@ -5,17 +5,6 @@ import IntroPage from './pages/IntroPage'
 import SearchResultsPage from './pages/SearchResultsPage'
 import { FullRecipePage } from './pages/FullRecipePage'
 
-/**
- * Configurazione rotte React Router v7
- * 
- * Struttura:
- * App (logica configurazione + layout)
- *   ├─ / (HomePage - selezione ingredienti)
- *   ├─ /intro (Configurazione iniziale API/Mock)
- *   ├─ /results?ingredients=... (Risultati ricerca con query string)
- *   └─ /recipe/:recipeId (Dettaglio ricetta con parametro dinamico)
- */
-
 const routes: RouteObject[] = [
   {
     path: '/',
