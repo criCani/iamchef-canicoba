@@ -1,5 +1,5 @@
-import { createContext, useContext, useState, type ReactNode } from 'react'
-import type { IRecipeByIng } from '../types/types'
+import { createContext, useContext, useState, type ReactNode, type Dispatch, type SetStateAction } from 'react'
+import type { IRecipeByIng, IRecipeDetails } from '../types/types'
 
 /**
  * RecipesContext - Context per gestire stato ricette globalmente
@@ -19,6 +19,12 @@ interface RecipesContextType {
   searchIngredients: string
   setSearchIngredients: (ingredients: string) => void
   clearRecipes: () => void
+  detailsCache: Record<number, IRecipeDetails>
+  // setDetailsCache: (cache: Record<number, IRecipeDetails>) => void | OLD LINE
+  // Obbiettivo: quando si torna indietro da FullRecipe a SearchResults, mantenere la cache dei dettagli, per non sprecare chiamate API.
+  // Problema: non consentiva il functional updater (prev => ...), causando errori TS quando si merge la cache.
+  // React dispatcher: consente functional updater per evitare overwrite con stato stantio quando si mergia la cache
+  setDetailsCache: Dispatch<SetStateAction<Record<number, IRecipeDetails>>>
 }
 
 const RecipesContext = createContext<RecipesContextType | undefined>(undefined)
@@ -30,10 +36,12 @@ interface RecipesProviderProps {
 export function RecipesProvider({ children }: RecipesProviderProps) {
   const [recipes, setRecipes] = useState<IRecipeByIng[]>([])
   const [searchIngredients, setSearchIngredients] = useState<string>('')
+  const [detailsCache, setDetailsCache] = useState<Record<number, IRecipeDetails>>({})
 
   const clearRecipes = () => {
     setRecipes([])
     setSearchIngredients('')
+    setDetailsCache({})
   }
 
   return (
@@ -43,7 +51,9 @@ export function RecipesProvider({ children }: RecipesProviderProps) {
         setRecipes, 
         searchIngredients, 
         setSearchIngredients,
-        clearRecipes 
+        clearRecipes,
+        detailsCache,
+        setDetailsCache
       }}
     >
       {children}

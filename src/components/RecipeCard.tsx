@@ -5,12 +5,37 @@ import IconifyIcon from '../utils/IconifyIcon';
 type RecipeCardProps = {
   recipe: IRecipeByIng;
   onClickDetails: (recipe: IRecipeByIng) => void;
+  meta?: {
+    readyInMinutes?: number;
+    cheap?: boolean;
+    servings?: number;
+    loading?: boolean;
+  };
 };
 
-const RecipeCard = ({ recipe, onClickDetails }: RecipeCardProps) => {
+const RecipeCard = ({ recipe, onClickDetails, meta }: RecipeCardProps) => {
   const data = recipe;
   const available = data.usedIngredients?.length || 0;
   const missing = data.missedIngredients?.length || 0;
+  const hasMeta = !!meta;
+
+  const readyText = meta?.readyInMinutes !== undefined
+    ? `${meta.readyInMinutes} min`
+    : meta?.loading
+      ? 'Caricamento...'
+      : 'N/D';
+
+  const cheapText = meta?.cheap !== undefined
+    ? (meta.cheap ? 'Economica' : 'Non economica')
+    : meta?.loading
+      ? 'Caricamento...'
+      : 'N/D';
+
+  const servingsText = meta?.servings !== undefined
+    ? `${meta.servings} porzioni`
+    : meta?.loading
+      ? 'Caricamento...'
+      : 'N/D';
 
   return (
     <div className="recipe-card">
@@ -26,6 +51,23 @@ const RecipeCard = ({ recipe, onClickDetails }: RecipeCardProps) => {
       <h2 className="recipe-card__title">
         {data.title || "Ricetta sconosciuta"}
       </h2>
+
+      {hasMeta && (
+        <div className="recipe-card__meta">
+          <div className="recipe-card__meta-item">
+            <span className="recipe-card__meta-icon"><IconifyIcon icon="mdi:clock" aria-hidden={true} /></span>
+            <span className="recipe-card__meta-text">{readyText}</span>
+          </div>
+          <div className="recipe-card__meta-item">
+            <span className="recipe-card__meta-icon"><IconifyIcon icon="mdi:money" aria-hidden={true} /></span>
+            <span className="recipe-card__meta-text">{cheapText}</span>
+          </div>
+          <div className="recipe-card__meta-item">
+            <span className="recipe-card__meta-icon"><IconifyIcon icon="mdi:silverware-fork-knife" aria-hidden={true} /></span>
+            <span className="recipe-card__meta-text">{servingsText}</span>
+          </div>
+        </div>
+      )}
 
       <div className="recipe-card__ingredients">
         {available > 0 && (

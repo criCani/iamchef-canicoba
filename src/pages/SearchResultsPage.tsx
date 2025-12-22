@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useSearchParams, useNavigate, useLocation } from 'react-router-dom';
 import RecipeCard from "../components/RecipeCard";
 import { ScrollSection } from "../components/ScrollSection";
@@ -17,7 +17,9 @@ function SearchResultsPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const mode = useModeStore((s) => s.mode);
-  const { recipes, searchIngredients, setRecipes, setSearchIngredients } = useRecipes();
+  const { recipes, searchIngredients, setRecipes, setSearchIngredients, detailsCache, setDetailsCache } = useRecipes();
+  const [loadingDetailsFor, setLoadingDetailsFor] = useState<number | null>(null);
+  const pendingDetailsRef = useRef<Partial<Record<number, Promise<IRecipeDetails | null>>>>({});
   
   // Recupera ingredienti dalla query string (per display)
   const ingredientsFromUrl = searchParams.get('ingredients') ?? searchIngredients;
@@ -72,21 +74,55 @@ function SearchResultsPage() {
     }
   }, [recipes, navigate]);
 
+  const fetchRecipeDetails = useCallback(async (recipeId: number): Promise<IRecipeDetails | null> => {
+    if (detailsCache[recipeId]) return detailsCache[recipeId];
+    const pending = pendingDetailsRef.current[recipeId];
+    if (pending) return pending;
+
+    setLoadingDetailsFor(recipeId);
+
+    const request = (async () => {
+      try {
+        const url = getRecipeInformationUrl(recipeId);
+
+        if (mode === 'mock') {
+          await simulateNetworkDelay(300);
+          const mock = getMockDataForUrl(url) as IRecipeDetails;
+          setDetailsCache(prev => ({ ...prev, [recipeId]: mock }));
+          return mock;
+        }
+
+        const resp = await fetch(url);
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const json = (await resp.json()) as IRecipeDetails;
+        setDetailsCache(prev => ({ ...prev, [recipeId]: json }));
+        return json;
+      } catch (e) {
+        console.error('Errore dettagli ricetta:', e);
+        return null;
+      } finally {
+        setLoadingDetailsFor((current) => current === recipeId ? null : current);
+        delete pendingDetailsRef.current[recipeId];
+      }
+    })();
+
+    pendingDetailsRef.current[recipeId] = request;
+    return request;
+  }, [detailsCache, mode, setDetailsCache]);
+
+  useEffect(() => {
+    const recipe = recipes[currentIndex];
+    if (!recipe) return;
+    if (detailsCache[recipe.id]) return;
+
+    fetchRecipeDetails(recipe.id);
+  }, [currentIndex, recipes, detailsCache, fetchRecipeDetails]);
+
   // Click su ricetta: fetch dettagli e naviga a /recipe/:id
   const handleRecipeDetailsClick = async (recipe: IRecipeByIng) => {
     try {
-      const url = getRecipeInformationUrl(recipe.id);
-      
-      let json: IRecipeDetails;
-      
-      if (mode === 'mock') {
-        await simulateNetworkDelay(300);
-        json = getMockDataForUrl(url) as IRecipeDetails;
-      } else {
-        const resp = await fetch(url);
-        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-        json = (await resp.json()) as IRecipeDetails;
-      }
+      const json = await fetchRecipeDetails(recipe.id);
+      if (!json) return;
       
       // Naviga a rotta dinamica /recipe/:recipeId, preservando l'indice corrente
       navigate(`/recipe/${recipe.id}`, {
@@ -136,6 +172,10 @@ function SearchResultsPage() {
     setIsRefreshing(true);
 
     try {
+      // Nuova ricerca: azzera eventuale stato di navigazione preservato e indice corrente
+      window.history.replaceState({}, document.title);
+      setCurrentIndex(0);
+
       const url = getRecipesByIngredientsUrl(ingredientsList, { ranking: 1, ignorePantry: true });
       let json: IRecipeByIng[];
 
@@ -152,7 +192,6 @@ function SearchResultsPage() {
         const ingredientNames = ingredientsList.map(ing => ing.name).join(',');
         setRecipes(json);
         setSearchIngredients(ingredientNames);
-        setCurrentIndex(0);
         navigate(`/results?ingredients=${encodeURIComponent(ingredientNames)}`);
         setSelectedIng(ingredientsList);
       }
@@ -170,6 +209,11 @@ function SearchResultsPage() {
   if (recipes.length === 0) {
     return null; // Verrà fatto redirect dalla useEffect
   }
+
+  const currentRecipe = recipes[currentIndex];
+  if (!currentRecipe) return null;
+  const currentDetails = currentRecipe ? detailsCache[currentRecipe.id] : undefined;
+  const isCurrentDetailsLoading = currentRecipe ? loadingDetailsFor === currentRecipe.id : false;
 
   return (
     <main className="search-results" id="recipe-card-container">
@@ -193,8 +237,14 @@ function SearchResultsPage() {
 
       <section className="search-results__card">
         <RecipeCard 
-          recipe={recipes[currentIndex]} 
-          onClickDetails={handleRecipeDetailsClick} 
+          recipe={currentRecipe} 
+          onClickDetails={handleRecipeDetailsClick}
+          meta={{
+            readyInMinutes: currentDetails?.readyInMinutes,
+            cheap: currentDetails?.cheap,
+            servings: currentDetails?.servings,
+            loading: isCurrentDetailsLoading && !currentDetails,
+          }} 
         />
       </section>
 
