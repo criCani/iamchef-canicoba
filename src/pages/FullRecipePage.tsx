@@ -79,9 +79,12 @@ export const FullRecipePage = () => {
           <RecipeInstructionsSection analyzedInstructions={recipe.analyzedInstructions as any} instructionsHtml={recipe.instructions} />
 
         </section>
+        
       </div>
 
-      <RecipeTopbar onBack={handleGoBack} onNewSearch={handleNewSearch} />
+      <div className="full-recipe__navigation">
+        <RecipeTopbar onBack={handleGoBack} onNewSearch={handleNewSearch} />
+      </div>
     </div>
   );
 };
