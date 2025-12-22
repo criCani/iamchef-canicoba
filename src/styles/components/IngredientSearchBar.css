@@ -69,6 +69,13 @@
   gap: 0.5rem;
 }
 
+.searchbar__error > span {
+  display: inline-flex;
+  flex-shrink: 0;
+  width: 1.2em;
+  height: 1.2em;
+}
+
 .searchbar__loading {
   color: var(--color-text-secondary);
   font-size: 0.875rem;
@@ -83,6 +90,23 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+}
+
+.searchbar__loading > span {
+  display: inline-flex;
+  flex-shrink: 0;
+  width: 1.2em;
+  height: 1.2em;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (min-width: 640px) {

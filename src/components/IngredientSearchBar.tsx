@@ -59,8 +59,8 @@ const IngredientSearchBar = ({ handleSuggestClick }: IngredientSearchBarProps) =
         )}
       </div>
 
-      {error && <p id="search-error" className="searchbar__error" role="alert">⚠️ Errore: {error}</p>}
-      {loading && <p id="search-loading" className="searchbar__loading" aria-live="polite">⏳ Caricamento...</p>}
+      {error && <p id="search-error" className="searchbar__error" role="alert"><IconifyIcon icon="mdi:alert-circle" aria-hidden={true} /> Errore: {error}</p>}
+      {loading && <p id="search-loading" className="searchbar__loading" aria-live="polite"><IconifyIcon icon="mdi:loading" aria-hidden={true} /> Caricamento...</p>}
     </div>
   );
 };
