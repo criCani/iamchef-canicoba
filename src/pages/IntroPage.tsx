@@ -2,20 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import useApiKeyStore from '../store/useApiKeyStore';
 import useModeStore, { type DataMode } from '../store/useModeStore';
-import '../styles/IntroPage.css';
-
-/**
- * IntroPage - Configurazione iniziale applicazione
- * 
- * Utilizzo React Router:
- * - useNavigate: navigazione programmatica verso home dopo salvataggio
- * - Replace: usa replace per evitare di tornare a intro con back button
- * 
- * Questa pagina permette di:
- * - Scegliere modalità API (con chiave Spoonacular) o Mock (dati demo)
- * - Salvare configurazione in localStorage tramite Zustand
- * - Navigare automaticamente alla home dopo configurazione
- */
+import '../styles/pages/IntroPage.css';
+import IconifyIcon from '../utils/IconifyIcon';
 
 const IntroPage = () => {
   const navigate = useNavigate();
@@ -49,7 +37,7 @@ const IntroPage = () => {
       <div className="intro-page__container">
         <div className="intro-page__card">
           <div className="intro-page__hero">
-            <span className="intro-page__hero-icon">🍳</span>
+            <span className="intro-page__hero-icon"><IconifyIcon icon="mdi:pot-steam" width="2.75em" height="2.75em" aria-hidden={true} /></span>
             <h1 className="intro-page__title">Benvenuto in iChef</h1>
             <p className="intro-page__subtitle">
               Scegli come vuoi utilizzare l'app:
@@ -64,27 +52,13 @@ const IntroPage = () => {
               onClick={() => handleModeChange('api')}
             >
               <div className="intro-page__mode-content">
-                <span className="intro-page__mode-icon">🌐</span>
+                <span className="intro-page__mode-icon"><IconifyIcon icon="mdi:globe" width="2.2em" height="2.2em" aria-hidden={true} /></span>
                 <span className="intro-page__mode-title">Usa API</span>
                 <span className="intro-page__mode-desc">Dati reali da Spoonacular</span>
               </div>
             </button>
-            
-            <button
-              className={`intro-page__mode-btn ${
-                selectedMode === 'mock' ? 'intro-page__mode-btn--active' : ''
-              }`}
-              onClick={() => handleModeChange('mock')}
-            >
-              <div className="intro-page__mode-content">
-                <span className="intro-page__mode-icon">🍳</span>
-                <span className="intro-page__mode-title">Usa Dati Demo</span>
-                <span className="intro-page__mode-desc">Dati di esempio pre-caricati</span>
-              </div>
-            </button>
-          </div>
 
-          {selectedMode === 'api' && (
+                      {selectedMode === 'api' && (
             <div className="intro-page__api-input">
               <p className="intro-page__api-label">
                 Inserisci la tua chiave API di Spoonacular, verrà salvata localmente nel tuo browser.
@@ -97,6 +71,21 @@ const IntroPage = () => {
               />
             </div>
           )}
+
+            
+            <button
+              className={`intro-page__mode-btn ${
+                selectedMode === 'mock' ? 'intro-page__mode-btn--active' : ''
+              }`}
+              onClick={() => handleModeChange('mock')}
+            >
+              <div className="intro-page__mode-content">
+                <span className="intro-page__mode-icon"><IconifyIcon icon="mdi:pot-steam" width="2.2em" height="2.2em" aria-hidden={true} /></span>
+                <span className="intro-page__mode-title">Usa Dati Demo</span>
+                <span className="intro-page__mode-desc">Dati di esempio pre-caricati</span>
+              </div>
+            </button>
+          </div>
           
           <div className="intro-page__actions">
             <button 

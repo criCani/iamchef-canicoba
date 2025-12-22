@@ -1,5 +1,6 @@
 import type { IRecipeByIng } from "../types/types";
-import '../styles/RecipeCard.css';
+import '../styles/components/RecipeCard.css';
+import IconifyIcon from '../utils/IconifyIcon';
 
 type RecipeCardProps = {
   recipe: IRecipeByIng;
@@ -15,11 +16,7 @@ const RecipeCard = ({ recipe, onClickDetails }: RecipeCardProps) => {
     <div className="recipe-card">
       <div className="recipe-card__image-wrapper">
         <img
-          src={
-            data.image?.length
-              ? data.image
-              : "https://images.unsplash.com/photo-1547385203-cfe7977b9fd0?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1171"
-          }
+          src={data.image || ""}
           alt={data.title || "Titolo non disponibile"}
           className="recipe-card__image"
         />
@@ -34,14 +31,14 @@ const RecipeCard = ({ recipe, onClickDetails }: RecipeCardProps) => {
         {available > 0 && (
           <div className="recipe-card__ingredient-section recipe-card__ingredient-section--available">
             <div className="recipe-card__ingredient-header">
-              <span className="recipe-card__ingredient-label">✅ A disposizione:</span>
+              <span className="recipe-card__ingredient-label"><IconifyIcon icon="mdi:check-circle" width="1.2em" height="1.2em" aria-hidden={true} /> A disposizione:</span>
               <span className="recipe-card__ingredient-count">{available}</span>
             </div>
-            <div className="recipe-card__ingredient-list">
+            <div className="recipe-card__ingredient-pills-container">
               {data.usedIngredients.map((ing) => (
-                <div key={ing.id} className="recipe-card__ingredient-item recipe-card__ingredient-item--available">
+                <span key={ing.id} className="recipe-card__ingredient-pill recipe-card__ingredient-pill--available">
                   {ing.name}
-                </div>
+                </span>
               ))}
             </div>
           </div>
@@ -49,14 +46,14 @@ const RecipeCard = ({ recipe, onClickDetails }: RecipeCardProps) => {
         {missing > 0 && (
           <div className="recipe-card__ingredient-section recipe-card__ingredient-section--missing">
             <div className="recipe-card__ingredient-header">
-              <span className="recipe-card__ingredient-label">⚠️ Ingredienti mancanti:</span>
+              <span className="recipe-card__ingredient-label"><IconifyIcon icon="mdi:alert-circle" width="1.2em" height="1.2em" aria-hidden={true} /> Ingredienti mancanti:</span>
               <span className="recipe-card__ingredient-count">{missing}</span>
             </div>
-            <div className="recipe-card__ingredient-list">
+            <div className="recipe-card__ingredient-pills-container">
               {data.missedIngredients.map((ing) => (
-                <div key={ing.id} className="recipe-card__ingredient-item recipe-card__ingredient-item--missing">
+                <span key={ing.id} className="recipe-card__ingredient-pill recipe-card__ingredient-pill--missing">
                   {ing.name}
-                </div>
+                </span>
               ))}
             </div>
           </div>
@@ -68,7 +65,7 @@ const RecipeCard = ({ recipe, onClickDetails }: RecipeCardProps) => {
         className="recipe-card__details-btn"
       >
         <span>Ricetta completa</span>
-        <span className="recipe-card__details-icon">🔗</span>
+        <span className="recipe-card__details-icon"><IconifyIcon icon="mdi:link" width="1.3em" height="1.3em" aria-hidden={true} /></span>
       </button>
     </div>
   );

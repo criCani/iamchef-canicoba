@@ -2,9 +2,9 @@ import { useEffect } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router'
 import useModeStore from './store/useModeStore'
 import useApiKeyStore from './store/useApiKeyStore'
-import Layout from './components/Layout'
-import Header from './components/Header'
-import Footer from './components/Footer'
+import AppLayout from './components/layout/AppLayout'
+import AppHeader from './components/layout/AppHeader'
+import AppFooter from './components/layout/AppFooter'
 
 /**
  * App - Componente principale con logica di configurazione
@@ -52,14 +52,14 @@ function App() {
   const showSettingsButton = location.pathname !== '/intro'
 
   return (
-    <Layout
+    <AppLayout
       header={
-        <Header 
+        <AppHeader 
           onSettingsClick={showSettingsButton ? handleSettingsClick : undefined} 
         />
       }
       main={<Outlet />}
-      footer={<Footer />}
+      footer={<AppFooter />}
     />
   )
 }

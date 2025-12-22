@@ -1,16 +1,16 @@
 import { createBrowserRouter, type RouteObject } from 'react-router'
 import App from './App'
-import Home from './pages/Home'
+import HomePage from './pages/HomePage'
 import IntroPage from './pages/IntroPage'
-import SearchResults from './pages/SearchResults'
-import { FullRecipe } from './pages/FullRecipe'
+import SearchResultsPage from './pages/SearchResultsPage'
+import { FullRecipePage } from './pages/FullRecipePage'
 
 /**
  * Configurazione rotte React Router v7
  * 
  * Struttura:
  * App (logica configurazione + layout)
- *   ├─ / (Home - selezione ingredienti)
+ *   ├─ / (HomePage - selezione ingredienti)
  *   ├─ /intro (Configurazione iniziale API/Mock)
  *   ├─ /results?ingredients=... (Risultati ricerca con query string)
  *   └─ /recipe/:recipeId (Dettaglio ricetta con parametro dinamico)
@@ -22,9 +22,9 @@ const routes: RouteObject[] = [
     element: <App />,
     children: [
       {
-        // Rotta index: Home page per selezione ingredienti
+        // Rotta index: Pagina per selezione ingredienti
         index: true,
-        element: <Home />
+        element: <HomePage />
       },
       {
         // Rotta statica: Configurazione iniziale (API key o modalità mock)
@@ -35,13 +35,13 @@ const routes: RouteObject[] = [
         // Rotta con query string: Risultati ricerca
         // Esempio: /results?ingredients=tomato,cheese&ranking=1
         path: 'results',
-        element: <SearchResults />
+        element: <SearchResultsPage />
       },
       {
         // Rotta dinamica: Dettaglio ricetta con ID
         // Esempio: /recipe/123456
         path: 'recipe/:recipeId',
-        element: <FullRecipe />
+        element: <FullRecipePage />
       }
     ]
   }

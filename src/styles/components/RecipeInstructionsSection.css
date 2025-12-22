@@ -1,0 +1,107 @@
+.full-recipe__instructions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.full-recipe__section-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  min-width: 1.5em;
+  min-height: 1.5em;
+  margin-right: 0.35rem;
+}
+
+.full-recipe__step {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem 0.875rem;
+  background: linear-gradient(135deg, #fff8f1 0%, #ffe8d6 100%);
+  border-radius: 10px;
+  border: 1px solid #ffe8d6;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.08);
+}
+
+.full-recipe__step:active {
+  transform: scale(0.99);
+  box-shadow: 0 1px 4px rgba(255, 107, 53, 0.12);
+}
+
+.full-recipe__step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  background: var(--gradient-primary);
+  color: var(--color-surface);
+  border-radius: 50%;
+  font-size: 0.95rem;
+  font-weight: 800;
+  box-shadow: 0 3px 10px rgba(255, 107, 53, 0.25);
+  align-self: flex-start;
+}
+
+.full-recipe__step-text {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #1f2937;
+  flex: 1;
+}
+
+.full-recipe__instructions-html {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #1f2937;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+}
+
+@media (min-width: 640px) {
+  .full-recipe__instructions {
+    gap: 1rem;
+  }
+
+  .full-recipe__step {
+    flex-direction: row;
+    gap: 0.85rem;
+    padding: 1.1rem 1rem;
+    border-radius: 12px;
+  }
+
+  .full-recipe__step:hover {
+    transform: scale(1.01);
+    box-shadow: 0 4px 16px rgba(255, 107, 53, 0.15);
+  }
+
+  .full-recipe__step:active {
+    transform: scale(0.99);
+  }
+
+  .full-recipe__step-number {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    font-size: 1rem;
+    margin-top: 0;
+  }
+
+  .full-recipe__step-text {
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .full-recipe__instructions-html {
+    font-size: 1rem;
+    line-height: 1.65;
+    padding: 1.1rem;
+    border-radius: 12px;
+  }
+}
