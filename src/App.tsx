@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Outlet, useLocation, useNavigate } from 'react-router'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import useModeStore from './store/useModeStore'
 import useApiKeyStore from './store/useApiKeyStore'
 import AppLayout from './components/layout/AppLayout'

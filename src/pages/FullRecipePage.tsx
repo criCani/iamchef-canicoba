@@ -1,4 +1,4 @@
-import { useParams, useNavigate, useLocation } from 'react-router';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import type { IRecipeDetails } from "../types/types";
 import { useRecipes } from '../contexts/RecipesContext';
 import '../styles/pages/FullRecipePage.css';

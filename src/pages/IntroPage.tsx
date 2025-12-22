@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import useApiKeyStore from '../store/useApiKeyStore';
 import useModeStore, { type DataMode } from '../store/useModeStore';
 import '../styles/pages/IntroPage.css';

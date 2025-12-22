@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import type { IIngredient, IRecipeByIng } from "../types/types";
 import IngredientSearchBar from "../components/IngredientSearchBar";
 import SelectedIngredients from "../components/SelectedIngredients";
