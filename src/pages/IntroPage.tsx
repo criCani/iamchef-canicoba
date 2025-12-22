@@ -37,7 +37,6 @@ const IntroPage = () => {
       <div className="intro-page__container">
         <div className="intro-page__card">
           <div className="intro-page__hero">
-            <span className="intro-page__hero-icon"><IconifyIcon icon="mdi:pot-steam" width="2.75em" height="2.75em" aria-hidden={true} /></span>
             <h1 className="intro-page__title">Benvenuto in iChef</h1>
             <p className="intro-page__subtitle">
               Scegli come vuoi utilizzare l'app:
